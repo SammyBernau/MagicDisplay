@@ -75,6 +75,7 @@ Temporary Items
 /css/*
 !/css/custom.css.sample
 !/css/main.css
+!/css/custom.css
 
 # Vim
 ## swap
