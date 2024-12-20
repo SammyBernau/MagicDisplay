@@ -1,7 +1,7 @@
 #PERSONAL
 .env
-config.env
-config.js
+/config/config.env
+/config/config.js
 
 # Various Node ignoramuses.
 logs
