@@ -1,3 +1,8 @@
+#PERSONAL
+.env
+config.env
+config.js
+
 # Various Node ignoramuses.
 logs
 *.log
