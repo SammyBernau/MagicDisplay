@@ -1,0 +1,151 @@
+/* Config Sample
+ *
+ * For more information on how you can configure this file
+ * see https://docs.magicmirror.builders/configuration/introduction.html
+ * and https://docs.magicmirror.builders/modules/configuration.html
+ *
+ * You can use environment variables using a `config.js.template` file instead of `config.js`
+ * which will be converted to `config.js` while starting. For more information
+ * see https://docs.magicmirror.builders/configuration/introduction.html#enviromnent-variables
+ */
+
+let config = {
+    address: "${HOSTNAME}",	// Address to listen on, can be:
+    // - "localhost", "127.0.0.1", "::1" to listen on loopback interfce
+
+    // - another specific IPv4/6 to listen on a specific interface
+    // - "0.0.0.0", "::" to listen on any interface
+    // Default, when address config is left out or empty, is "localhost"
+    port: "${PORT}",
+    basePath: "/",	// The URL path where MagicMirror² is hosted. If you are using a Reverse proxy
+    // you must set the sub path here. basePath must end with a /
+    ipWhitelist:
+        ["127.0.0.1", "::ffff:127.0.0.1", "::1","${WHITELISTED_IP}"],// Set [] to allow all IP addresses
+    // or add a specific IPv4 of 192.168.1.5 :
+    // ["127.0.0.1", "::ffff:127.0.0.1", "::1", "::ffff:192.168.1.5"],
+    // or IPv4 range of 192.168.3.0 --> 192.168.3.15 use CIDR format :
+    // ["127.0.0.1", "::ffff:127.0.0.1", "::1", "::ffff:192.168.3.0/28"],
+
+    useHttps: false,			// Support HTTPS or not, default "false" will use HTTP
+    httpsPrivateKey: "",	// HTTPS private key path, only require when useHttps is true
+    httpsCertificate: "",	// HTTPS Certificate path, only require when useHttps is true
+
+    language: "en",
+    locale: "en-US",
+    logLevel: ["INFO", "LOG", "WARN", "ERROR"], // Add "DEBUG" for even more logging
+    timeFormat: 12,
+    units: "imperial",
+
+    modules: [
+        {
+            module: "alert",
+        },
+        {
+            module: "updatenotification",
+            position: "top_bar"
+        },
+        {
+            module: "clock",
+            position: "top_left"
+        },
+        {
+            module: 'MMM-2Day-NOAA-Forecast',
+            position: 'top_left',
+            header: "Today/Tomorrow",
+            config: {
+                lat: "${LAT}",
+                lon: "${LON}",
+                units: "imperial",
+                interval: 10 * 60 * 1000
+            }
+        },
+        // {
+        //     module: "weather",
+        //     position: "top_left",
+        //     header: "Current",
+        //     config: {
+        //         weatherProvider: "openmeteo",
+        //         type: "current",
+        //         lat: "${LAT}",
+        //         lon: "${LON}",
+        //         degreeLabel: true,
+        //         colored: true,
+        //         fadePoint: 1,
+        //         maxEntries: 12,
+        //     }
+        // },
+        {
+            module: "weather",
+            position: "top_left",
+            header: "3 Day Forecast",
+            config: {
+                weatherProvider: "openmeteo",
+                type: "forecast",
+                lat: "${LAT}",
+                lon: "${LON}",
+                degreeLabel: true,
+                colored: true,
+                maxNumberOfDays: 3,
+                ignoreToday: true,
+                fadePoint: 1,
+            }
+        },
+        {
+            module: "calendar",
+            header: "My Calendar",
+            position: "lower_third",
+            config: {
+                calendars: [
+                    {
+                        fetchInterval: 7 * 24 * 60 * 60 * 1000,
+                        symbol: "calendar-check",
+                        url: "${CALENDAR_URL}"
+                    }
+                ]
+            }
+        },
+        {
+            module: 'MMM-BackgroundSlideshow',
+            position: 'fullscreen_below',
+            config: {
+                imagePaths: ["${BACKGROUNDS_PATH}"],
+                transitionImages: true,
+                randomizeImageOrder: true,
+                showAllImagesBeforeRestart: true,
+                showProgressBar: true,
+                trasnsitionImages: true,
+                transitions: ['opacity'],
+
+
+            }
+        },
+        {
+            module: "MMM-Glassy",
+            disabled: false,
+            config: {
+                ignoreModules: ['MMM-BackgroundSlideshow'],
+                mirrorBackground: false,
+                modulePadding: "10px",
+                moduleRadius: "10px",
+                moduleShadow: "5px",
+                moduleBackgroundRGB: "0,0,0",
+                moduleBackgroundOpacity: "15%",
+                moduleBorderRGB: "255,255,255",
+                moduleBorderOpacity: "10%",
+                moduleShadowOffsetX: "-5px",
+                moduleShadowOffsetY: "-5px",
+                moduleShadowBlur: "8px",
+                moduleShadowColor: "black",
+                moduleBlur: "5px",
+                moduleSpacing: "15px",
+                mirrorMargin: "10px",
+                mirrorBackgroundFile: "default.jpg",
+                mirrorBackgroundOnSuspend: true
+            }
+        }
+    ]
+
+};
+
+/*************** DO NOT EDIT THE LINE BELOW ***************/
+if (typeof module !== "undefined") { module.exports = config; }
